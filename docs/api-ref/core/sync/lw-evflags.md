@@ -201,6 +201,35 @@ New object.
 </tbody>
 </table>
 
+##### (Property) LwEventFlags.prototype.value
+
+Current flag value.
+
+<u>Accessibility</u>:
+<table>
+<thead>
+<th>Readable</th><th>Writable</th>
+</thead>
+<tbody>
+<tr><td>Yes</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<u>Note(s)</u>:
+
+For setter:
+  1. The new flag value must be an integer between 0x00000000 and 0xFFFFFFFF.
+
+<u>Exception(s)</u>:
+<table>
+<thead>
+<th>Exception Type</th><th>Exception Reason(s)</th><th>Exception Thrown When</th>
+</thead>
+<tbody>
+<tr><td><i>Error</i></td><td>Invalid flag value.</td><td>Set</td></tr>
+</tbody>
+</table>
+
 ##### (Method) LwEventFlags.prototype.pend(bits, op[, flags = 0])
 
 Pend on selected bits.

@@ -345,6 +345,63 @@ const LwEventFlags = (function() {
         }
 
         //
+        //  Public members.
+        //
+
+        /**
+         *  Get current flag value.
+         * 
+         *  @returns {Number}
+         *    - The flag value.
+         */
+        get value() {
+            //  Get private fields.
+            let privfields = INSTANCE_PRIVFIELDS.get(this);
+
+            //  Get current value.
+            return privfields.current;
+        }
+
+        /**
+         *  Set current flag value.
+         * 
+         *  Note(s):
+         *    [1] The new flag value must be an integer between 0x00000000 and 
+         *        0xFFFFFFFF.
+         * 
+         *  @throws {Error}
+         *    - Possible reason(s):
+         *      - Invalid flag value.
+         *  @param {Number} newval
+         *    - The new flag value.
+         */
+        set value(newval) {
+            //  Check the new value.
+            if (!(
+                Number.isInteger(newval) && 
+                newval >= 0x00000000 && 
+                newval <= 0xFFFFFFFF
+            )) {
+                throw new Error("Invalid flag value.");
+            }
+
+            //  Get private fields.
+            let privfields = INSTANCE_PRIVFIELDS.get(this);
+
+            //  Get current value.
+            let oldval = privfields.current;
+
+            //  Apply the new value.
+            if (newval != oldval) {
+                privfields.current = newval;
+                if (!privfields.notifying) {
+                    privfields.notifying = true;
+                    Process.nextTick(_ClassPriv_Notify, privfields);
+                }
+            }
+        }
+
+        //
         //  Public methods.
         //
 
