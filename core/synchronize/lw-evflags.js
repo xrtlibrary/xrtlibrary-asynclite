@@ -522,6 +522,10 @@ const LwEventFlags = (function() {
          *        0x00000000 and 0xFFFFFFFF. Set correlated bit of `bits` to 1
          *        if that bit is selected.
          * 
+         *  @throws {Error}
+         *    - Possible reason(s):
+         *      - Invalid bits selection.
+         *      - Invalid post operation.
          *  @param {Number} bits
          *    - The selected bits.
          *  @param {Number} op
@@ -657,7 +661,7 @@ const LwEventFlags = (function() {
          * 
          *  Note(s):
          *    [1] This operation means that selected bits of the flag value 
-         *        would be cleared (=> 1).
+         *        would be cleared (=> 0).
          * 
          *  @type {Number}
          */
