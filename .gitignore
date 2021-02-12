@@ -1,0 +1,18 @@
+#
+#  Copyright 2021 The XRT Authors. All rights reserved.
+#  Use of this source code is governed by a BSD-style license that can be
+#  found in the LICENSE.md file.
+#
+
+#  Internal files.
+/internal/
+*.perftest.js
+*-perftest.js
+*.selftest.js
+*-selftest.js
+
+#  Dependency directories
+/node_modules/
+
+#  Backup files.
+*.bak
