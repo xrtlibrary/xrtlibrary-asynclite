@@ -4,7 +4,7 @@
 
 These examples will demostrate how to use *LwSemaphore* class.
 
-#### Example 1: Basic usage.
+#### Example 1: Basic usage
 
 To create a semaphore, simply use `new` statement to create an instance of *LwSemaphore* class (the initial semaphore value can be specified in the parameter of the constructor):
 
@@ -26,7 +26,7 @@ To release the semaphore (increase the semaphore value by 1), call the *release(
 sem.release();
 ```
 
-#### Example 2: Acquire a semaphore synchonously.
+#### Example 2: Acquire a semaphore synchonously
 
 To acquire a semaphoe synchronously (i.e. without waiting), call the *acquire()* method with *ACFLAG_NOWAIT* flag:
 
@@ -43,7 +43,7 @@ if (wh === null) {
 }
 ```
 
-#### Example 3: Cancel waiting.
+#### Example 3: Cancel waiting
 
 The *cancel()* method (i.e. *cancel* property which is a *Function* instance) of a *LwSemaphore.WaitHandle* instance can be used to cancel waiting.
 

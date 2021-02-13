@@ -4,7 +4,7 @@
 
 These examples will demostrate how to use *LwTimeout* class.
 
-#### Example 1: Wait for specified timespan.
+#### Example 1: Wait for specified timespan
 
 This example demostates how to wait for 1000 milliseconds.
 
@@ -22,7 +22,7 @@ await tmo.handle;
 console.log("1000ms elapsed.");
 ```
 
-#### Example 2: Wait until specified time.
+#### Example 2: Wait until specified time
 
 This example demostrates how to wait until specified timestamp.
 
@@ -35,7 +35,7 @@ let tmo = LwTimeout.WaitUntil(ts);
 
 To wait until the timestamp, `await` just like previous example.
 
-#### Example 3: Cancel waiting.
+#### Example 3: Cancel waiting
 
 The *cancel()* method (i.e. *cancel* property which is a *Function* instance) of a *LwTimeout* instance can be used to cancel waiting.
 
