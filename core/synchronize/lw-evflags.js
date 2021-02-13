@@ -142,8 +142,10 @@ const LwEventFlags = (function() {
      *  @typedef {Object} TClassPrivateFields
      *  @property {Number} current
      *    - Current flag value.
-     *  @property {Set<() => void>} notifiers
+     *  @property {Set<() => Number>} notifiers
      *    - Value change notifiers.
+     *      - The return value of the notifier function is a combination of 
+     *        RCHKRETFL_{DETACH, VALUECHANGE}.
      *  @property {Boolean} notifying
      *    - Notifying flag.
      */
@@ -158,6 +160,20 @@ const LwEventFlags = (function() {
      *  @type {WeakMap<InstanceType<typeof LwEventFlags>, TClassPrivateFields>}
      */
     const INSTANCE_PRIVFIELDS = new WeakMap();
+
+    /**
+     *  Recheck return flag: Detach the recheck function.
+     * 
+     *  @type {Number}
+     */
+    const RCHKRETFL_DETACH = (1 << 0);
+
+    /**
+     *  Recheck return flag: Flag value changed.
+     * 
+     *  @type {Number}
+     */
+    const RCHKRETFL_VALUECHANGE = (1 << 1);
 
     //
     //  Local functions.
@@ -300,9 +316,40 @@ const LwEventFlags = (function() {
      *    - The instance private fields.
      */
     function _ClassPriv_Notify(privfields) {
+        //  Unset the notifying flag.
         privfields.notifying = false;
-        for (let ntfy of privfields.notifiers) {
-            ntfy();
+
+        //  Get notifiers.
+        let notifiers = privfields.notifiers;
+
+        //  Notify all.
+        /**
+         *  Detached notifier set.
+         * 
+         *  @type {Set<() => Number>}
+         */
+        let detached = new Set();
+        let rescan = false;
+        do {
+            rescan = false;
+            for (let ntfy of notifiers) {
+                if (detached.has(ntfy)) {
+                    continue;
+                }
+                let rchkflg = ntfy();
+                if ((rchkflg & RCHKRETFL_DETACH) != 0) {
+                    detached.add(ntfy);
+                }
+                if ((rchkflg & RCHKRETFL_VALUECHANGE) != 0) {
+                    rescan = true;
+                    break;
+                }
+            }
+        } while(rescan);
+        if (detached.size != 0) {
+            for (let ntfy of detached) {
+                notifiers.delete(ntfy);
+            }
         }
     }
 
@@ -514,11 +561,14 @@ const LwEventFlags = (function() {
             wh.handle = new Promise(function(resolve) {
                 /**
                  *  Recheck function.
+                 * 
+                 *  @returns {Number}
+                 *    - The recheck return flags.
                  */
                 function _WaitHandle_Recheck() {
                     //  Do not operate if not in AWAIT status.
                     if (status != LwEventFlags_.WaitHandle.STATUS_AWAIT) {
-                        return;
+                        return RCHKRETFL_DETACH;
                     }
 
                     //  Update current value.
@@ -526,6 +576,8 @@ const LwEventFlags = (function() {
 
                     //  Check current value.
                     if (chker(current, bits)) {
+                        let rchkfl = RCHKRETFL_DETACH;
+
                         //  Go to SATISFIED status.
                         status = LwEventFlags_.WaitHandle.STATUS_SATISFIED;
                         wh.status = status;
@@ -536,14 +588,16 @@ const LwEventFlags = (function() {
                         //  Consume bits.
                         if ((flags & LwEventFlags_.PENDFLAG_CONSUME) != 0) {
                             privfields.current = consumer(current, bits);
+                            rchkfl += RCHKRETFL_VALUECHANGE;
                         }
 
-                        //  Detach the recheck notifier.
-                        notifiers.delete(_WaitHandle_Recheck);
-    
                         //  Let the wait handle resolve.
                         resolve(wh);
+
+                        return rchkfl;
                     }
+
+                    return 0;
                 }
 
                 //  Assign cancellator function.
