@@ -542,7 +542,14 @@ const LwEventFlags = (function() {
 
                 //  Consume bits.
                 if ((flags & LwEventFlags_.PENDFLAG_CONSUME) != 0) {
-                    privfields.current = consumer(current, bits);
+                    let newval = consumer(current, bits);
+                    if (current != newval) {
+                        privfields.current = newval;
+                        if (!privfields.notifying) {
+                            privfields.notifying = true;
+                            Process.nextTick(_ClassPriv_Notify, privfields);
+                        }
+                    }
                 }
 
                 return wh;
