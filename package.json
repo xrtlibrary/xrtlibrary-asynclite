@@ -1,6 +1,6 @@
 {
   "name": "xrtlibrary-asynclite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lite (lightweight) version of \"xrtlibrary-async\" library.",
   "main": "library/api.js",
   "author": "The XRT Authors.",
