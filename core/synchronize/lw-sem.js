@@ -183,9 +183,6 @@ const LwSemaphore = (function() {
         /**
          *  Acquire the semaphore.
          * 
-         *  @throws {Error}
-         *    - Possible reason(s):
-         *      - Invalid acquire flags.
          *  @param {Number} [flags]
          *    - The acquire flag (combination of ACFLAG_{NOWAIT}, 0 if no flag).
          *  @returns {?(InstanceType<typeof LwSemaphore.WaitHandle>)}
@@ -193,14 +190,6 @@ const LwSemaphore = (function() {
          *      semaphore can't be acquired immediately).
          */
         acquire(flags = 0) {
-            //  Check the acquire flags.
-            if (!Number.isInteger(flags)) {
-                throw new Error("Invalid acquire flags.");
-            }
-
-            //  Get the NOWAIT bit.
-            let nowait = ((flags & LwSemaphore.ACFLAG_NOWAIT) != 0);
-
             //  Get private fields.
             let privfields = INSTANCE_PRIVFIELDS.get(this);
 
@@ -224,7 +213,7 @@ const LwSemaphore = (function() {
             //
 
             //  Return if NOWAIT flag is set.
-            if (nowait) {
+            if ((flags & LwSemaphore.ACFLAG_NOWAIT) != 0) {
                 return null;
             }
 

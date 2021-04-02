@@ -464,7 +464,6 @@ const LwEventFlags = (function() {
          *    - Possible reason(s):
          *      - Invalid bits selection.
          *      - Invalid pending operation.
-         *      - Invalid pending flags.
          *  @param {Number} bits
          *    - The selected bits.
          *  @param {Number} op
@@ -515,11 +514,6 @@ const LwEventFlags = (function() {
                 break;
             default:
                 throw new Error("Invalid pending operation.");
-            }
-
-            //  Check the pending flags.
-            if (!Number.isInteger(flags)) {
-                throw new Error("Invalid pending flags.");
             }
 
             //  Get private fields.

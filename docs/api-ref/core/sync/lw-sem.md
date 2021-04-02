@@ -119,16 +119,6 @@ New object.
 
 Acquire the semaphore.
 
-<u>Exception(s)</u>:
-<table>
-<thead>
-<th>Exception Type</th><th>Exception Reason(s)</th>
-</thead>
-<tbody>
-<tr><td><i>Error</i></td><td>Invalid acquire flags.</td></tr>
-</tbody>
-</table>
-
 <u>Parameter(s)</u>:
 <table>
 <thead>

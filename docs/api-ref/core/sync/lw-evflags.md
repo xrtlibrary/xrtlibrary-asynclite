@@ -245,7 +245,6 @@ Pend on selected bits.
 <tbody>
 <tr><td rowspan="3"><i>Error</i></td><td>Invalid bits selection.</td></tr>
 <tr><td>Invalid pending operation.</td></tr>
-<tr><td>Invalid pending flags.</td></tr>
 </tbody>
 </table>
 
