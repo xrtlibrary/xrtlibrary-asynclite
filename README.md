@@ -9,6 +9,7 @@ This library is a lited(lightweight) version of `xtlibrary-async` library ([npm]
 <th>Class Name</th><th>Equivlent Class in the Origin Library</th>
 </thead>
 <tbody>
+<tr><td><a href="docs/api-ref/core/sync/lw-completion.md">LwCompletion</a></td><td><a href="https://git-private.xiaojsoft.org/xrtlibrary/xrtlibrary-async#%28class%29-conditionalsynchronizer%26lt%3bt%26gt%3b">ConditionalSynchronizer</a> (internal repository link)</td></tr>
 <tr><td rowspan="2"><a href="docs/api-ref/core/sync/lw-sem.md">LwSemaphore</a></td><td><a href="https://git-private.xiaojsoft.org/xrtlibrary/xrtlibrary-async#%28class%29-slimsemaphoresynchronizer">SlimSemaphoreSynchronizer</a> (internal repository link)</td></tr>
 <tr><td><a href="https://git-private.xiaojsoft.org/xrtlibrary/xrtlibrary-async#%28class%29-semaphoresynchronizer">SemaphoreSynchronizer</a> (internal repository link)</td></tr>
 <tr><td rowspan="2"><a href="docs/api-ref/core/sync/lw-evflags.md">LwEventFlags</a></td><td><a href="https://git-private.xiaojsoft.org/xrtlibrary/xrtlibrary-async#%28class%29-slimeventflags">SlimEventFlags</a> (internal repository link)</td></tr>

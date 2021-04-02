@@ -15,6 +15,8 @@ const CrSyncLwEvFlags =
     require("./../core/synchronize/lw-evflags");
 const CrSyncLwSem = 
     require("./../core/synchronize/lw-sem");
+const CrSyncLwCompletion = 
+    require("./../core/synchronize/lw-completion");
 
 //  Imported classes.
 const LwTimeout = 
@@ -23,6 +25,8 @@ const LwEventFlags =
     CrSyncLwEvFlags.LwEventFlags;
 const LwSemaphore = 
     CrSyncLwSem.LwSemaphore;
+const LwCompletion = 
+    CrSyncLwCompletion.LwCompletion;
 
 //  Export public APIs.
 module.exports = {
@@ -31,6 +35,7 @@ module.exports = {
     },
     "Synchronize": {
         "LwEventFlags": LwEventFlags,
-        "LwSemaphore": LwSemaphore
+        "LwSemaphore": LwSemaphore,
+        "LwCompletion": LwCompletion
     }
 };
