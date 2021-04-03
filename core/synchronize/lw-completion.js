@@ -290,6 +290,26 @@ const LwCompletion = (function() {
             return true;
         }
 
+        /**
+         *  Get whether the completion was already completed.
+         * 
+         *  @returns {Boolean}
+         *    - True if so.
+         */
+        isCompleted() {
+            return INSTANCE_PRIVFIELDS.get(this).completed;
+        }
+
+        /**
+         *  Get the completion value.
+         * 
+         *  @returns {?T}
+         *    - The completion value (NULL if not completed).
+         */
+        getCompletionValue() {
+            return INSTANCE_PRIVFIELDS.get(this).completionValue;
+        }
+
         //
         //  Public static members.
         //

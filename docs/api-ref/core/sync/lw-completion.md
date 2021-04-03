@@ -147,6 +147,34 @@ Try to make the completion complete.
 </tbody>
 </table>
 
+##### (Method) LwCompletion.prototype.isCompleted()
+
+Get whether the completion was already completed.
+
+<u>Return value</u>:
+<table>
+<thead>
+<th>Return Value Type</th><th>Return Value Description</th>
+</thead>
+<tbody>
+<tr><td><i>Boolean</i></td><td>True if so.</td></tr>
+</tbody>
+</table>
+
+##### (Method) LwCompletion.prototype.getCompletionValue()
+
+Get the completion value.
+
+<u>Return value</u>:
+<table>
+<thead>
+<th>Return Value Type</th><th>Return Value Description</th>
+</thead>
+<tbody>
+<tr><td><i>?T</i></td><td>The completion value (NULL if not completed).</td></tr>
+</tbody>
+</table>
+
 ##### (Static Method) LwCompletion.WaitAll(completions[, flags = 0])
 
 Wait for all specified completions to be completed.
