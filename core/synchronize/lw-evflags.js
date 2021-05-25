@@ -752,7 +752,7 @@ const LwEventFlags = (function() {
          * 
          *  @type {Number}
          */
-        static PENDOP_SET_ANY  = 10002;
+        static PENDOP_SET_ANY  = 10004;
 
         /**
          *  Pending flag: Consume bit changes.
