@@ -1,12 +1,11 @@
 {
   "name": "xrtlibrary-asynclite",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Lite (lightweight) version of \"xrtlibrary-async\" library.",
   "main": "library/api.js",
   "author": "The XRT Authors.",
   "license": "BSD-3-Clause",
   "devDependencies": {
     "@types/node": "^10.17.51"
-  },
-  "dependencies": {}
+  }
 }
