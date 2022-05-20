@@ -312,7 +312,7 @@ const LwSemaphore = (function() {
          * 
          *  @type {Number}
          */
-        static ACFLAG_NOWAIT = (1 << 0);
+        static ACFLAG_NOWAIT = ((1 << 0) >>> 0);
     };
 })();
 

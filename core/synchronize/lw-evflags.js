@@ -166,14 +166,14 @@ const LwEventFlags = (function() {
      * 
      *  @type {Number}
      */
-    const RCHKRETFL_DETACH = (1 << 0);
+    const RCHKRETFL_DETACH = ((1 << 0) >>> 0);
 
     /**
      *  Recheck return flag: Flag value changed.
      * 
      *  @type {Number}
      */
-    const RCHKRETFL_VALUECHANGE = (1 << 1);
+    const RCHKRETFL_VALUECHANGE = ((1 << 1) >>> 0);
 
     //
     //  Local functions.
@@ -759,14 +759,14 @@ const LwEventFlags = (function() {
          * 
          *  @type {Number}
          */
-        static PENDFLAG_CONSUME = (1 << 0);
+        static PENDFLAG_CONSUME = ((1 << 0) >>> 0);
 
         /**
          *  Pending flag: No wait.
          * 
          *  @type {Number}
          */
-        static PENDFLAG_NOWAIT  = (1 << 1);
+        static PENDFLAG_NOWAIT  = ((1 << 1) >>> 0);
 
         /**
          *  Post operation: Clear selected bits.

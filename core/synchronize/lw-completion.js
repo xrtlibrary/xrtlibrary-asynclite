@@ -636,7 +636,7 @@ const LwCompletion = (function() {
          * 
          *  @type {Number}
          */
-        static WAITFLAG_NOWAIT = (1 << 0);
+        static WAITFLAG_NOWAIT = ((1 << 0) >>> 0);
     };
 })();
 
