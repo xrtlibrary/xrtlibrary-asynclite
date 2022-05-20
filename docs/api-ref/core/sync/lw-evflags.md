@@ -295,7 +295,7 @@ Post on selected bits.
 </thead>
 <tbody>
 <tr><td><i>bits</i></td><td rowspan="2"><i>Number</i></td><td>The selected bits.</td></tr>
-<tr><td><i>op</i></td><td>The post operation (one of <i>POSTOP_{CLR, SET}</i>).</td></tr>
+<tr><td><i>op</i></td><td>The post operation (one of <i>POSTOP_{CLR, SET, FLIP}</i>).</td></tr>
 </tbody>
 </table>
 

@@ -641,7 +641,7 @@ const LwEventFlags = (function() {
          *  @param {Number} bits
          *    - The selected bits.
          *  @param {Number} op
-         *    - The post operation (one of POSTOP_{CLR, SET}).
+         *    - The post operation (one of POSTOP_{CLR, SET, FLIP}).
          *  @returns {InstanceType<typeof LwEventFlags>}
          *    - `this` for method chaining.
          */
