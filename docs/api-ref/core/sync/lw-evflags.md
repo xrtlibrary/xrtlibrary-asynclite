@@ -78,7 +78,7 @@ Cancellator function.
 
 Lightweight event flags.
 
-##### (Static Constant) LwEventFlags.PENDOP_{CLR_ALL, CLR_ANY, SET_ALL, SET_ANY}
+##### (Static Constant) LwEventFlags.PENDOP_{CLR_ALL, CLR_ANY, SET_ALL, SET_ANY, FLIP_ALL, FLIP_ANY}
 
 Pending operation.
 
@@ -89,31 +89,46 @@ Pending operation.
 <tbody>
 <tr>
 <td><i>PENDOP_CLR_ALL</i></td>
-<td rowspan="4"><i>Number</i></td>
+<td rowspan="6"><i>Number</i></td>
 <td>Pending operation: All bits cleared.</td>
 <td>
-1. This operation means that the pending condition would become satisfied once all selected bits of the flag value are cleared (=&gt; 0).
+This operation means that the pending condition would become satisfied once all selected bits of the flag value are cleared (=&gt; 0).
 </td>
 </tr>
 <tr>
 <td><i>PENDOP_CLR_ANY</i></td>
 <td>Pending operation: Any bit cleared.</td>
 <td>
-2. This operation means that the pending condition would become satisfied once any of selected bits of the flag value is cleared (=&gt; 0).
+This operation means that the pending condition would become satisfied once any of selected bits of the flag value is cleared (=&gt; 0).
 </td>
 </tr>
 <tr>
 <td><i>PENDOP_SET_ALL</i></td>
 <td>Pending operation: All bits set.</td>
 <td>
-3. This operation means that the pending condition would become satisfied once all selected bits of the flag value are set (=&gt; 1).
+This operation means that the pending condition would become satisfied once all selected bits of the flag value are set (=&gt; 1).
 </td>
 </tr>
 <tr>
 <td><i>PENDOP_SET_ANY</i></td>
 <td>Pending operation: Any bit set.</td>
 <td>
-5. This operation means that the pending condition would become satisfied once any of selected bits of the flag value is set (=&gt; 1).
+This operation means that the pending condition would become satisfied once any of selected bits of the flag value is set (=&gt; 1).
+</td>
+</tr>
+<tr>
+<td><i>PENDOP_FLIP_ALL</i></td>
+<td>Pending operation: All bits flipped.</td>
+<td>
+This operation means that the pending condition would become satisfied once all selected bits of the flag value are flipped (0 =&gt; 1, 1 =&gt; 0).
+</td>
+</tr>
+</tr>
+<tr>
+<td><i>PENDOP_FLIP_ANY</i></td>
+<td>Pending operation: Any bit flipped.</td>
+<td>
+This operation means that the pending condition would become satisfied once any of selected bits of the flag value is flipped (0 =&gt; 1, 1 =&gt; 0).
 </td>
 </tr>
 </tbody>
@@ -154,21 +169,21 @@ Post operation.
 <td rowspan="3"><i>Number</i></td>
 <td>Post operation: Clear selected bits.</td>
 <td>
-1. This operation means that selected bits of the flag value would be cleared (=&gt; 0).
+This operation means that selected bits of the flag value would be cleared (=&gt; 0).
 </td>
 </tr>
 <tr>
 <td><i>POSTOP_SET</i></td>
 <td>Post operation: Set selected bits.</td>
 <td>
-1. This operation means that selected bits of the flag value would be set (=&gt; 1).
+This operation means that selected bits of the flag value would be set (=&gt; 1).
 </td>
 </tr>
 <tr>
 <td><i>POSTOP_FLIP</i></td>
 <td>Post operation: Flip selected bits.</td>
 <td>
-1. This operation means that selected bits of the flag value would be flipped (0 =&gt; 1, 1 =&gt; 0).
+This operation means that selected bits of the flag value would be flipped (0 =&gt; 1, 1 =&gt; 0).
 </td>
 </tr>
 </tbody>
@@ -306,6 +321,20 @@ Post on selected bits.
 </thead>
 <tbody>
 <tr><td><i>LwEventFlags</i></td><td><i>this</i> for method chaining.</td></tr>
+</tbody>
+</table>
+
+##### (Method) LwEventFlags.prototype.monitor()
+
+Monitor any change on the flag value.
+
+<u>Return value</u>:
+<table>
+<thead>
+<th>Return Value Type</th><th>Return Value Description</th>
+</thead>
+<tbody>
+<tr><td><i>LwEventFlags.WaitHandle</i></td><td>The wait handle.</td></tr>
 </tbody>
 </table>
 
