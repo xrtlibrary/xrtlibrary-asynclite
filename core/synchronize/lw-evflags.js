@@ -488,11 +488,11 @@ const LwEventFlags = (function() {
 
             //  Check the pending operation.
             /**
-             *  @type {(value: Number, bits: Number) => Boolean}
+             *  @type {(value: Number, bits: Number, original: Number) => Boolean}
              */
             let chker = null;
             /**
-             *  @type {(value: Number, bits: Number) => Boolean}
+             *  @type {(value: Number, bits: Number, original: Number) => Boolean}
              */
             let consumer = null;
             switch(op) {
@@ -522,11 +522,14 @@ const LwEventFlags = (function() {
             //  Get current value.
             let current = privfields.current;
 
+            //  Save the original value before the pending operation.
+            let original = current;
+
             //  Get value change notifier set.
             let notifiers = privfields.notifiers;
 
             //  Fast path: Already satisfied.
-            if (chker(current, bits)) {
+            if (chker(current, bits, original)) {
                 //  Create the wait handle.
                 let wh = new LwEventFlags_.WaitHandle();
                 wh.status = LwEventFlags_.WaitHandle.STATUS_SATISFIED;
@@ -536,7 +539,11 @@ const LwEventFlags = (function() {
 
                 //  Consume bits.
                 if ((flags & LwEventFlags_.PENDFLAG_CONSUME) != 0) {
-                    let newval = consumer(current, bits);
+                    let newval = consumer(
+                        current, 
+                        bits, 
+                        original
+                    );
                     if (current != newval) {
                         privfields.current = newval;
                         if (!privfields.notifying) {
@@ -576,7 +583,7 @@ const LwEventFlags = (function() {
                     current = privfields.current;
 
                     //  Check current value.
-                    if (chker(current, bits)) {
+                    if (chker(current, bits, original)) {
                         let rchkfl = RCHKRETFL_DETACH;
 
                         //  Go to SATISFIED status.
@@ -588,7 +595,11 @@ const LwEventFlags = (function() {
 
                         //  Consume bits.
                         if ((flags & LwEventFlags_.PENDFLAG_CONSUME) != 0) {
-                            privfields.current = consumer(current, bits);
+                            privfields.current = consumer(
+                                current, 
+                                bits, 
+                                original
+                            );
                             rchkfl += RCHKRETFL_VALUECHANGE;
                         }
 
