@@ -185,7 +185,7 @@ const LwEventFlags = (function() {
      *  Note(s):
      *    [1] The value of `value` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
-     *    [1] The value of `bits` parameter is assumed to be an integer between
+     *    [2] The value of `bits` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
      * 
      *  @param {Number} value
@@ -205,7 +205,7 @@ const LwEventFlags = (function() {
      *  Note(s):
      *    [1] The value of `value` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
-     *    [1] The value of `bits` parameter is assumed to be an integer between
+     *    [2] The value of `bits` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
      * 
      *  @param {Number} value
@@ -225,7 +225,7 @@ const LwEventFlags = (function() {
      *  Note(s):
      *    [1] The value of `value` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
-     *    [1] The value of `bits` parameter is assumed to be an integer between
+     *    [2] The value of `bits` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
      * 
      *  @param {Number} value
@@ -245,7 +245,7 @@ const LwEventFlags = (function() {
      *  Note(s):
      *    [1] The value of `value` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
-     *    [1] The value of `bits` parameter is assumed to be an integer between
+     *    [2] The value of `bits` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
      * 
      *  @param {Number} value
@@ -260,20 +260,77 @@ const LwEventFlags = (function() {
     }
 
     /**
+     *  Pending condition checker: for PENDOP_FLIP_ALL operation.
+     * 
+     *  Note(s):
+     *    [1] The value of `value` parameter is assumed to be an integer between
+     *        0x00000000 and 0xFFFFFFFF.
+     *    [2] The value of `bits` parameter is assumed to be an integer between
+     *        0x00000000 and 0xFFFFFFFF.
+     *    [3] The value of `original` parameter is assumed to be an integer 
+     *        between 0x00000000 and 0xFFFFFFFF.
+     * 
+     *  @param {Number} value
+     *    - The flag value to be checked.
+     *  @param {Number} bits
+     *    - The selected bits.
+     *  @param {Number} original
+     *    - The original value before pending operation.
+     *  @returns {Boolean}
+     *    - True if the condition satisfies.
+     */
+    function _PendConditionChk_FlipAll(value, bits, original) {
+        let v1 = (value & bits);
+        v1  >>>= 0;
+        let v2 = (original & bits);
+        v2    ^= bits;
+        v2  >>>= 0;
+        return v1 == v2;
+    }
+
+    /**
+     *  Pending condition checker: for PENDOP_FLIP_ANY operation.
+     * 
+     *  Note(s):
+     *    [1] The value of `value` parameter is assumed to be an integer between
+     *        0x00000000 and 0xFFFFFFFF.
+     *    [2] The value of `bits` parameter is assumed to be an integer between
+     *        0x00000000 and 0xFFFFFFFF.
+     *    [3] The value of `original` parameter is assumed to be an integer 
+     *        between 0x00000000 and 0xFFFFFFFF.
+     * 
+     *  @param {Number} value
+     *    - The flag value to be checked.
+     *  @param {Number} bits
+     *    - The selected bits.
+     *  @param {Number} original
+     *    - The original value before pending operation.
+     *  @returns {Boolean}
+     *    - True if the condition satisfies.
+     */
+    function _PendConditionChk_FlipAny(value, bits, original) {
+        let v1 = (value & bits);
+        v1  >>>= 0;
+        let v2 = (original & bits);
+        v2  >>>= 0;
+        return v1 != v2;
+    }
+
+    /**
      *  Pending consumer: for PENDOP_CLR_{ALL, ANY} operations.
      * 
      *  Note(s):
      *    [1] The value of `value` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
-     *    [1] The value of `bits` parameter is assumed to be an integer between
+     *    [2] The value of `bits` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
      * 
      *  @param {Number} value
-     *    - The origin flag value.
+     *    - The flag value.
      *  @param {Number} bits
-     *    - The bits to be consumed.
+     *    - The selected bits.
      *  @returns {Number}
-     *    - The proceed flag value.
+     *    - The flag value after consuming all selected bits.
      */
     function _PendConsume_Clear(value, bits) {
         //  Affected bits should be set.
@@ -287,21 +344,48 @@ const LwEventFlags = (function() {
      *  Note(s):
      *    [1] The value of `value` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
-     *    [1] The value of `bits` parameter is assumed to be an integer between
+     *    [2] The value of `bits` parameter is assumed to be an integer between
      *        0x00000000 and 0xFFFFFFFF.
      * 
      *  @param {Number} value
-     *    - The origin flag value.
+     *    - The flag value.
      *  @param {Number} bits
-     *    - The bits to be consumed.
+     *    - The selected bits.
      *  @returns {Number}
-     *    - The proceed flag value.
+     *    - The flag value after consuming all selected bits.
      */
     function _PendConsume_Set(value, bits) {
         //  Affected bits should be cleared.
         bits ^= 0xFFFFFFFF;
         bits  = (bits >>> 0);
         value &= bits;
+        return (value >>> 0);
+    }
+
+    /**
+     *  Pending consumer: for PENDOP_FLIP_{ALL, ANY} operations.
+     * 
+     *  Note(s):
+     *    [1] The value of `value` parameter is assumed to be an integer between
+     *        0x00000000 and 0xFFFFFFFF.
+     *    [2] The value of `bits` parameter is assumed to be an integer between
+     *        0x00000000 and 0xFFFFFFFF.
+     *    [3] The value of `original` parameter is assumed to be an integer 
+     *        between 0x00000000 and 0xFFFFFFFF.
+     * 
+     *  @param {Number} value
+     *    - The flag value.
+     *  @param {Number} bits
+     *    - The selected bits.
+     *  @param {Number} original
+     *    - The original value before pending operation.
+     *  @returns {Number}
+     *    - The flag value after consuming all selected bits.
+     */
+    function _PendConsume_Flip(value, bits, original) {
+        //  Keep unselected bits unchanged, and restore selected bits.
+        value &= (bits ^ 0xFFFFFFFF);
+        value |= (bits & original);
         return (value >>> 0);
     }
 
@@ -468,7 +552,7 @@ const LwEventFlags = (function() {
          *    - The selected bits.
          *  @param {Number} op
          *    - The pending operation (one of PENDOP_{CLR_ALL, CLR_ANY, SET_ALL,
-         *      SET_ANY}).
+         *      SET_ANY, FLIP_ALL, FLIP_ANY}).
          *  @param {Number} [flags]
          *    - The pending flag (combination of PENDFLAG_{CONSUME, NOWAIT}, 0 
          *      if no flag).
@@ -511,6 +595,14 @@ const LwEventFlags = (function() {
             case LwEventFlags_.PENDOP_SET_ANY:
                 chker = _PendConditionChk_SetAny;
                 consumer = _PendConsume_Set;
+                break;
+            case LwEventFlags_.PENDOP_FLIP_ALL:
+                chker = _PendConditionChk_FlipAll;
+                consumer = _PendConsume_Flip;
+                break;
+            case LwEventFlags_.PENDOP_FLIP_ANY:
+                chker = _PendConditionChk_FlipAny;
+                consumer = _PendConsume_Flip;
                 break;
             default:
                 throw new Error("Invalid pending operation.");
@@ -709,75 +801,7 @@ const LwEventFlags = (function() {
          *    - The wait handle.
          */
         monitor() {
-            //  Get private fields.
-            let privfields = INSTANCE_PRIVFIELDS.get(this);
-
-            //  Get current value as previous value.
-            let previous = privfields.current;
-
-            //  Get value change notifier set.
-            let notifiers = privfields.notifiers;
-
-            //  Monitor value change.
-            let wh = new LwEventFlags_.WaitHandle();
-            let status = LwEventFlags_.WaitHandle.STATUS_AWAIT;
-            wh.status = status;
-            wh.value = 0;
-            wh.handle = new Promise(function(resolve) {
-                /**
-                 *  Recheck function.
-                 * 
-                 *  @returns {Number}
-                 *    - The recheck return flags.
-                 */
-                function _WaitHandle_Recheck() {
-                    //  Do not operate if not in AWAIT status.
-                    if (status != LwEventFlags_.WaitHandle.STATUS_AWAIT) {
-                        return RCHKRETFL_DETACH;
-                    }
-
-                    //  Get and check current value.
-                    let current = privfields.current;
-                    if (current != previous) {
-                        //  Go to SATISFIED status.
-                        status = LwEventFlags_.WaitHandle.STATUS_SATISFIED;
-                        wh.status = status;
-
-                        //  Save the value.
-                        wh.value = current;
-
-                        //  Let the wait handle resolve.
-                        resolve(wh);
-
-                        return RCHKRETFL_DETACH;
-                    }
-
-                    return 0;
-                }
-
-                //  Assign cancellator function.
-                wh.cancel = function() {
-                    //  Do not operate if not in AWAIT status.
-                    if (status != LwEventFlags_.WaitHandle.STATUS_AWAIT) {
-                        return;
-                    }
-
-                    //  Go to CANCELLED status.
-                    status = LwEventFlags_.WaitHandle.STATUS_CANCELLED;
-                    wh.status = status;
-
-                    //  Detach the recheck notifier.
-                    notifiers.delete(_WaitHandle_Recheck);
-
-                    //  Let the wait handle resolve.
-                    resolve(wh);
-                };
-
-                //  Attach value change notifier.
-                notifiers.add(_WaitHandle_Recheck);
-            });
-
-            return wh;
+            return this.pend(0xFFFFFFFF, LwEventFlags_.PENDOP_FLIP_ANY);
         }
 
         //
@@ -842,6 +866,30 @@ const LwEventFlags = (function() {
          *  @type {Number}
          */
         static PENDOP_SET_ANY  = 10004;
+
+        /**
+         *  Pending operation: All bits flipped.
+         * 
+         *  Note(s):
+         *    [1] This operation means that the pending condition would become 
+         *        satisfied once all selected bits of the flag value are 
+         *        flipped (0 => 1, 1 => 0).
+         * 
+         *  @type {Number}
+         */
+        static PENDOP_FLIP_ALL = 10005;
+
+        /**
+         *  Pending operation: Any bit flipped.
+         * 
+         *  Note(s):
+         *    [1] This operation means that the pending condition would become 
+         *        satisfied once any of selected bits of the flag value is 
+         *        flipped (0 => 1, 1 => 0).
+         * 
+         *  @type {Number}
+         */
+        static PENDOP_FLIP_ANY = 10006;
 
         /**
          *  Pending flag: Consume bit changes.
