@@ -691,6 +691,84 @@ const LwEventFlags = (function() {
             return this;
         }
 
+        /**
+         *  Monitor any change on the flag value.
+         * 
+         *  @returns {?(InstanceType<typeof LwEventFlags.WaitHandle>)}
+         *    - The wait handle.
+         */
+        monitor() {
+            //  Get private fields.
+            let privfields = INSTANCE_PRIVFIELDS.get(this);
+
+            //  Get current value as previous value.
+            let previous = privfields.current;
+
+            //  Get value change notifier set.
+            let notifiers = privfields.notifiers;
+
+            //  Monitor value change.
+            let wh = new LwEventFlags_.WaitHandle();
+            let status = LwEventFlags_.WaitHandle.STATUS_AWAIT;
+            wh.status = status;
+            wh.value = 0;
+            wh.handle = new Promise(function(resolve) {
+                /**
+                 *  Recheck function.
+                 * 
+                 *  @returns {Number}
+                 *    - The recheck return flags.
+                 */
+                function _WaitHandle_Recheck() {
+                    //  Do not operate if not in AWAIT status.
+                    if (status != LwEventFlags_.WaitHandle.STATUS_AWAIT) {
+                        return RCHKRETFL_DETACH;
+                    }
+
+                    //  Get and check current value.
+                    let current = privfields.current;
+                    if (current != previous) {
+                        //  Go to SATISFIED status.
+                        status = LwEventFlags_.WaitHandle.STATUS_SATISFIED;
+                        wh.status = status;
+
+                        //  Save the value.
+                        wh.value = current;
+
+                        //  Let the wait handle resolve.
+                        resolve(wh);
+
+                        return RCHKRETFL_DETACH;
+                    }
+
+                    return 0;
+                }
+
+                //  Assign cancellator function.
+                wh.cancel = function() {
+                    //  Do not operate if not in AWAIT status.
+                    if (status != LwEventFlags_.WaitHandle.STATUS_AWAIT) {
+                        return;
+                    }
+
+                    //  Go to CANCELLED status.
+                    status = LwEventFlags_.WaitHandle.STATUS_CANCELLED;
+                    wh.status = status;
+
+                    //  Detach the recheck notifier.
+                    notifiers.delete(_WaitHandle_Recheck);
+
+                    //  Let the wait handle resolve.
+                    resolve(wh);
+                };
+
+                //  Attach value change notifier.
+                notifiers.add(_WaitHandle_Recheck);
+            });
+
+            return wh;
+        }
+
         //
         //  Public static members.
         //
