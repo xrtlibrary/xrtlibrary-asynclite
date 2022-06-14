@@ -438,7 +438,7 @@ const LwCompletion = (function() {
                     /**
                      *  Wait callback.
                      */
-                    function _WaitCallback() {
+                    let wcbk = function() {
                         //  Save the completion value.
                         completionValues[offset] = 
                             privates[offset].completionValue;
@@ -470,8 +470,8 @@ const LwCompletion = (function() {
                     };
 
                     //  Attach the wait callback.
-                    incompleteWaitCallbacks[offset] = _WaitCallback;
-                    privates[offset].onCompleteCallbacks.add(_WaitCallback);
+                    incompleteWaitCallbacks[offset] = wcbk;
+                    privates[offset].onCompleteCallbacks.add(wcbk);
                 }
             });
 
@@ -592,7 +592,7 @@ const LwCompletion = (function() {
                     /**
                      *  Wait callback.
                      */
-                    function _WaitCallback() {
+                    let wcbk = function() {
                         //  Stop if not in AWAIT status.
                         if (status != LwCompletion.WaitHandle.STATUS_AWAIT) {
                             return;
@@ -616,11 +616,11 @@ const LwCompletion = (function() {
 
                         //  Let the wait handle resolve.
                         resolve(wh);
-                    }
+                    };
 
                     //  Attach incomplete wait callback.
-                    incompleteWaitCallbacks.push(_WaitCallback);
-                    privates[offset].onCompleteCallbacks.add(_WaitCallback);
+                    incompleteWaitCallbacks.push(wcbk);
+                    privates[offset].onCompleteCallbacks.add(wcbk);
                 }
             });
 

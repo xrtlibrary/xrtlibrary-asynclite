@@ -6,6 +6,7 @@
   "author": "The XRT Authors.",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "@types/node": "^10.17.51"
+    "@types/node": "^10.17.51",
+    "eslint": "^8.16.0"
   }
 }
