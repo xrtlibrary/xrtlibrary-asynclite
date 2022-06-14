@@ -797,7 +797,7 @@ const LwEventFlags = (function() {
         /**
          *  Monitor any change on the flag value.
          * 
-         *  @returns {?(InstanceType<typeof LwEventFlags.WaitHandle>)}
+         *  @returns {InstanceType<typeof LwEventFlags.WaitHandle>}
          *    - The wait handle.
          */
         monitor() {
